@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<br />
+<br />
+<br />
+<div class="wrapper">
+    <div class="container">
+        <h3 align="center">Remote Access</h3>
+        <br />
+        <input type="text" id="searchInput" placeholder="ค้นหา..." />
+        <br>
+        <br>
+        <table id="myTable" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Username</th>
+                    <th>IP</th>
+                    <th>Date time</th>
+                    <th>Remote IP</th>
+                    <th>Device</th>
+                    <th>Protocol</th>
+                    <th>Remote Username</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (logs && logs.length) { %>
+                    <% logs.forEach((log, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= log.username %></td>
+                            <td><%= log.IP %></td>
+                            <td>
+                                <% // Format the Date time here %>
+                                <% var originalDateTime = log['Date time'] ? new Date(log['Date time']) : null; %>
+                                <% var formattedDateTime = originalDateTime ? `${originalDateTime.getFullYear()}-${(originalDateTime.getMonth() + 1).toString().padStart(2, '0')}-${originalDateTime.getDate().toString().padStart(2, '0')} ${originalDateTime.getHours().toString().padStart(2, '0')}:${originalDateTime.getMinutes().toString().padStart(2, '0')}:${originalDateTime.getSeconds().toString().padStart(2, '0')}` : 'ไม่มีข้อมูล'; %>
+                                <%= formattedDateTime %>
+                            </td>
+                            <td><%= log['Remote IP'] %></td>
+                            <td><%= log['DeviceName'] %></td>
+                            <td><%= log.Protocol %></td>
+                            <td><%= log['Remote Username'] %></td>
+                            <td><%= log.Action %></td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="8">ไม่มีข้อมูลการRemote</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+        <button id="printButton" class="btn btn-secondary">Print</button>
+        <button id="exportExcelButton" class="btn btn-success">Export to Excel</button>
+        <a href="/Log/list" class="btn btn-primary">Return</a>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#searchInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tbody tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+
+    $("#printButton").on("click", function () {
+      var printContents = "<h3 align='center'>Remote Access</h3>" + document.getElementById("myTable").outerHTML;
+      var originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      window.print();
+      document.body.innerHTML = originalContents;
+    });
+
+    $("#exportExcelButton").on("click", function () {
+      var ws = XLSX.utils.table_to_sheet(document.getElementById("myTable"));
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      // Include header row in Excel export
+      var header = ["No", "Username", "IP", "Date time", "Remote IP", "Protocol", "Remote Username", "Action"];
+      XLSX.utils.sheet_add_aoa(ws, [header], { origin: "A1" });
+      XLSX.writeFile(wb, "exported_data.xlsx");
+    });
+  });
+</script>
+

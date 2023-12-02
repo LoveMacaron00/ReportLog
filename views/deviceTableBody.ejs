@@ -1,0 +1,15 @@
+<% if (data) { %>
+    <% for (var i = 0; i < data.length; i++) { %>
+        <tr>
+            <td><%= data[i].DeviceID %></td>
+            <td><%= data[i].HostIP %></td>
+            <td><%= data[i].DeviceName %></td>
+            <td>
+                <a href="/Device/edit/<%= data[i].DeviceID %>" class="btn btn-info" style="width: 80px;">Edit</a>
+            </td>
+            <td>
+                <a href="/Device/delete/<%= data[i].DeviceID %>" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    <% } %>
+<% } %> 

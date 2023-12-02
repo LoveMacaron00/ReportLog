@@ -1,0 +1,16 @@
+<% if (data) { %>
+    <% for (var i = 0; i < data.length; i++) { %>
+        <!-- Render search results here -->
+        <tr>
+            <td><%= data[i].ServiceID %></td>
+            <td><%= data[i].PortNumber %></td>
+            <td><%= data[i].ServiceName %></td>
+            <td>
+                <a href="/Service/edit/<%= data[i].ServiceID %>" class="btn btn-info" style="width: 80px;">Edit</a>
+            </td>
+            <td>
+                <a href="/Service/delete/<%= data[i].ServiceID %>" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    <% } %>
+<% } %>

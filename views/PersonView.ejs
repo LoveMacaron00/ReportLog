@@ -1,0 +1,113 @@
+<%- include("_header1"); -%>
+<br>
+<br>
+<br>
+<style>
+    .form-control {
+    width: 15%; /* หรือ width: 50vw; */
+}
+</style>
+<h3 align="center"> Person </h3>
+<div class="container">
+    <div class="row mt-5">  
+        <div class="col-md-9">
+            <div>
+                <a href="/Person/new" class="btn btn-primary">Add</a>
+                <br>
+                <br>
+                <!-- Add input field for search -->
+                <div class="form-group">
+                    <label for="searchInput">ค้นหา:</label>
+                    <input type="text" class="form-control" id="searchInput" placeholder="กรอกคำค้นหา">
+                </div>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-15">
+            <!-- Person table -->
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>UserName</th>
+                        <th>FirstName</th>
+                        <th>LastName</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <% if (data) { %>
+                        <% for (var i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].PersonID %></td>
+                                <td><%= data[i].PersonName %></td>
+                                <td><%= data[i].FirstName %></td>
+                                <td><%= data[i].LastName %></td>
+                                <td>
+                                    <a href="/Person/edit/<%= data[i].PersonID %>" class="btn btn-info" style="width: 80px;">Edit</a>
+                                </td>
+                                <td>
+                                    <a href="/Person/delete/<%= data[i].PersonID %>" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% } %> 
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <% if (currentPage > 1) { %>
+                    <a href="/Person/list?page=<%= currentPage - 1 %>" class="btn btn-primary">Previous</a>
+                <% } %>
+
+                <% for (var i = 1; i <= totalPages; i++) { %>
+                    <a href="/Person/list?page=<%= i %>" class="btn btn-primary"><%= i %></a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                    <a href="/Person/list?page=<%= currentPage + 1 %>" class="btn btn-primary">Next</a>
+                <% } %>
+            </div>    
+            <br>
+
+            <a href="/Log/list" class="btn btn-primary">Return</a>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery for search functionality -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $('#searchInput').on('keypress', function (e) {
+        if (e.which === 13) {
+            performSearch();
+        }
+    });
+
+    $('#searchInput').on('blur', function () {
+        performSearch();
+    });
+
+    function performSearch() {
+        var searchTerm = $('#searchInput').val();
+
+        console.log('Search term to be sent to the server:', searchTerm);
+
+        $.ajax({
+            type: 'GET',
+            url: '/Person/search',
+            data: { searchTerm: searchTerm },
+            success: function (data) {
+                console.log('Server response:', data);
+                $('.table-body').html(data.html);
+            },
+            error: function (err) {
+                console.error('Error:', err);
+            }
+        });
+    }
+</script>
+
+<%- include("_footer"); -%>

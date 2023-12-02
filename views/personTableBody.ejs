@@ -1,0 +1,17 @@
+<% if (data) { %>
+    <% for (var i = 0; i < data.length; i++) { %>
+        <!-- Render search results here -->
+        <tr>
+            <td><%= data[i].PersonID %></td>
+            <td><%= data[i].PersonName %></td>
+            <td><%= data[i].FirstName %></td>
+            <td><%= data[i].LastName %></td>
+            <td>
+                <a href="/Person/edit/<%= data[i].PersonID %>" class="btn btn-info" style="width: 80px;">Edit</a>
+            </td>
+            <td>
+                <a href="/Person/delete/<%= data[i].PersonID %>" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    <% } %>
+<% } %>

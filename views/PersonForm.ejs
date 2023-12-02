@@ -1,0 +1,28 @@
+<%- include("_header1"); -%>
+<br>
+<br>
+<h1 align="center">Person ADD</h1>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12 d-flex justify-content-center">
+            <form action="/Person/add" method="post" class="w-50">
+                <div class="form-group">
+                    <label for="PersonName">UserName</label>
+                    <input type="text" name="PersonName" placeholder="UserName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="FirstName">FirstName</label>
+                    <input type="text" name="FirstName" placeholder="FirstName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="LastName">LastName</label>
+                    <input type="text" name="LastName" placeholder="LastName" class="form-control">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">บันทึก</button>
+                <a href="/Person/list" class="btn btn-primary">ย้อนกลับ</a>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include("_footer"); -%>

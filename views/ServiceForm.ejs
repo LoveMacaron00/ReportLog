@@ -1,0 +1,25 @@
+<%- include("_header1"); -%>
+<br>
+<br>
+<h1 align="center">เพิ่มข้อมูล Service</h1>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12 d-flex justify-content-center">
+            <form action="/Service/add" method="post" class="w-50">
+                <div class="form-group">
+                    <label for="PortNumber">PortNumber</label>
+                    <input type="text" name="PortNumber" placeholder="PortNumber" class="form-control">
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="ServiceName">ServiceName</label>
+                    <input type="text" name="ServiceName" placeholder="ServiceName" class="form-control">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">บันทึก</button>
+                <a href="/Service/list" class="btn btn-primary">ย้อนกลับ</a>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include("_footer"); -%>

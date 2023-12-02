@@ -1,0 +1,21 @@
+<%- include("./_header1"); -%>
+<br>
+<br>
+<body>
+    <h1 align="center" style="margin-top: 230px;">Confirm Delete</h1>
+    <div class="container">
+        <div class="row mt-2">
+            <div class="col-md-12 d-flex justify-content-center">
+                <form method="post" action="<%= data ? '/Device/deleteConfirm/' + data.DeviceID : '' %>" class="w-120 mx-auto">
+                    <% if (data && data.isMedia) { %>
+                        <a align="center" href="/Device/list" class="btn btn-info mx-auto" style="margin-top: 20px;">Back</a>
+
+                    <% } else { %>
+                        <a align="center" href="/Device/list" class="btn btn-info mx-auto" style="margin-top: 20px;">Back</a>
+                    <% } %>
+                    <button align="center" type="submit" class="btn btn-danger mx-auto" style="margin-top: 20px;">Confirm</button> 
+                </form>
+            </div>
+        </div>
+    </div>
+<%- include("./_footer"); -%>

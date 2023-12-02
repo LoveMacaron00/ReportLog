@@ -1,0 +1,315 @@
+<%- include("_header"); -%>
+
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.css"
+/>
+<link
+  rel="stylesheet"
+  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  crossorigin="anonymous"
+/>
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css"
+  rel="stylesheet"
+/>
+<link
+  href="https://raw.githack.com/ttskch/select2-bootstrap4-theme/master/dist/select2-bootstrap4.css"
+  rel="stylesheet"
+/>
+<link href="select2-bootstrap4.css" rel="stylesheet" />
+
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+></script>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"
+></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<style>
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse; /* Add border-collapse for better table appearance */
+}
+
+th, td {
+  text-align: center;
+  padding: 10px; /* Add padding for better cell spacing */
+  border: 1px solid #dee2e6; /* Add border to cells */
+}
+.container {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 20px; /* Add margin at the top */
+}
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination a {
+  margin: 0 5px;
+  color: #007bff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+}
+
+.pagination .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.pagination .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+#dateRange {
+    width: 320px;
+    padding: 5px; /* ปรับตามความต้องการ */
+}
+
+.wrapper1 {
+max-width: 100%;
+}
+
+.btn-internet-color {
+  background-color: #ffffcc; /* Light yellow color */
+  color: #000000; /* Black text color */
+  border: 2px solid #ffcc00; /* Yellow border with 2px width */
+  /* Add any other styles for Internet button */
+}
+
+.btn-remote-color {
+  background-color: #ccffcc; /* Light green color */
+  color: #000000; /* Black text color */
+  border: 2px solid #33cc33; /* Green border with 2px width */
+  /* Add any other styles for Remote button */
+}
+
+
+</style>
+
+<br />
+<br />
+<br />
+<div class="wrapper">
+  <div class="container">
+    <h3 align="center">รายงานประวัติการใช้งานอินเทอร์เน็ต</h3>
+    <br />
+    <form>
+      <div class="wrapper1">
+      <% const uniqueUsernames = new Set(); for (let i = 0; i <
+      loginData.length; i++) { uniqueUsernames.add(loginData[i]['Username']); }
+      %>
+        <label>ค้นหาผู้ใช้ :</label>
+      <select
+        multiple="multiple"
+        placeholder="Users"
+        id="userSelect"
+        data-allow-clear="1"
+      >
+        <% uniqueUsernames.forEach(username => { %>
+        <option><%= username || 'ไม่มีข้อมูล' %></option>
+        <% }); %>
+      </select>
+    </div>
+      <br>
+      <div class="form-group">
+        <label>ช่วงเวลา :</label>
+        <br />
+        <input type="text" name="datetimes" id="dateRange" />
+      </div>
+
+      <br />
+      <button type="button" class="btn btn-primary" id="searchBtn">
+        ค้นหา
+      </button>
+    </form>
+    <br />
+    <div class="wrapper">
+      <div class="container">
+        <br />
+        <table id="dataTables" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>ลำดับ</th>
+              <th>Username</th>
+              <th>FirstName-LastName</th>
+              <th>IP</th>
+              <th>Logged In</th>
+              <th>Logged Out</th>
+              <th>Internet Access</th>
+              <th>Remote Access</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% for (let i = 0; i < loginData.length; i++) { %>
+            <tr>
+              <td><%= loginData[i]['id'] || 'ไม่มีข้อมูล' %></td>
+              <td><%= loginData[i]['Username'] || 'ไม่มีข้อมูล' %></td>
+              <td><%= Data[i]['FullName'] || 'ไม่มีข้อมูล' %></td>
+              <td><%= loginData[i]['IP'] || 'ไม่มีข้อมูล' %></td>
+              <% var loggedInDate = loginData[i] && loginData[i]['LoggedIn'] ?
+              new Date(loginData[i]['LoggedIn']) : null; var
+              formattedLoggedInDate = loggedInDate ? loggedInDate.getFullYear()
+              + '-' + (loggedInDate.getMonth() + 1).toString().padStart(2, '0')
+              + '-' + loggedInDate.getDate().toString().padStart(2, '0') + ' ' +
+              loggedInDate.getHours().toString().padStart(2, '0') + ':' +
+              loggedInDate.getMinutes().toString().padStart(2, '0') + ':' +
+              loggedInDate.getSeconds().toString().padStart(2, '0') :
+              'ไม่มีข้อมูล'; %>
+              <td><%= formattedLoggedInDate %></td>
+              <% var loggedOutDate = logoutData[i] && logoutData[i]['LoggedOut']
+              ? new Date(logoutData[i]['LoggedOut']) : null; var
+              formattedLoggedOutDate = loggedOutDate ?
+              loggedOutDate.getFullYear() + '-' + (loggedOutDate.getMonth() +
+              1).toString().padStart(2, '0') + '-' +
+              loggedOutDate.getDate().toString().padStart(2, '0') + ' ' +
+              loggedOutDate.getHours().toString().padStart(2, '0') + ':' +
+              loggedOutDate.getMinutes().toString().padStart(2, '0') + ':' +
+              loggedOutDate.getSeconds().toString().padStart(2, '0') :
+              'ไม่มีข้อมูล'; %>
+              <td><%= formattedLoggedOutDate %></td>
+
+              <td>
+                <a
+                  href="/Internet/list/<%= loginData[i].id %>_<%= loginData[i].Username %>_<%= loginData[i].IP %>?LoggedIn=<%= formattedLoggedInDate %>&LoggedOut=<%= formattedLoggedOutDate %>"
+                  class="btn btn-internet-color"
+                  >View</a
+                >
+              </td>
+              <td>
+                <a
+                  href="/Remote/list/<%= loginData[i].id %>_<%= loginData[i].Username %>_<%= loginData[i].IP %> ?LoggedIn=<%= formattedLoggedInDate %>&LoggedOut=<%= formattedLoggedOutDate %>"
+                  class="btn btn-remote-color"
+                  >View</a
+                >
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                  <% if (currentPage > 1) { %>
+                      <a href="/Log/list?page=<%= currentPage - 1 %>" class="btn btn-primary">Previous</a>
+                  <% } %>
+  
+                  <% for (var i = 1; i <= totalPages; i++) { %>
+                      <a href="/Log/list?page=<%= i %>" class="btn btn-primary"><%= i %></a>
+                  <% } %>
+  
+                  <% if (currentPage < totalPages) { %>
+                      <a href="/Log/list?page=<%= currentPage + 1 %>" class="btn btn-primary">Next</a>
+                  <% } %>
+              </div>    
+              <br>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2 for user selection
+    $('select[multiple="multiple"]').select2({
+      theme: "bootstrap4",
+      width: "style",
+      placeholder: "โปรดเลือก",
+      allowClear: true,
+    });
+
+    // Initialize DateRangePicker
+    $('input[name="datetimes"]').daterangepicker({
+  timePicker: true,
+  startDate: moment().startOf("day"), // เปลี่ยนเป็น startOf("day")
+  endDate: moment().startOf("day").add(1, "day"), // เปลี่ยนเป็น startOf("day").add(1, "day")
+  locale: {
+    format: "YYYY-MM-DD HH:mm:ss",
+  },
+});
+
+
+
+    // เมื่อคลิกที่ปุ่มค้นหา
+    $("#searchBtn").on("click", function () {
+      var selectedUsers = $("#userSelect").val(); // ข้อมูลผู้ใช้ที่เลือก
+      var selectedDateRange = $("#dateRange").val(); // ช่วงเวลาที่เลือก
+
+      // แสดงทุกแถวก่อน
+      $("#dataTables tbody tr").show();
+
+      // ถ้ามีผู้ใช้ที่ถูกเลือก
+      if (selectedUsers && selectedUsers.length > 0) {
+        $("#dataTables tbody tr").each(function () {
+          var username = $(this).find("td:eq(1)").text(); // ชื่อผู้ใช้ในแถว
+          if (!selectedUsers.includes(username)) {
+            $(this).hide(); // ซ่อนแถวที่ไม่ตรงกับผู้ใช้ที่เลือก
+          }
+        });
+      }
+
+      // ถ้ามีช่วงเวลาที่เลือก
+      if (selectedDateRange) {
+        var [startDate, endDate] = selectedDateRange.split(" - ");
+        startDate = startDate.replace(" ", "T"); // แทนที่ช่องว่างด้วย "T"
+        endDate = endDate.replace(" ", "T");
+
+        $("#dataTables tbody tr").each(function () {
+          var loggedInDate = $(this).find("td:eq(4)").text(); // วันที่เข้าสู่ระบบในแถว
+
+          // ตรวจสอบว่า loggedInDate อยู่ระหว่างช่วงเวลาที่ผู้ใช้เลือก
+          if (loggedInDate < startDate || loggedInDate > endDate) {
+            $(this).hide(); // ซ่อนแถวที่ไม่ตรงกับช่วงเวลาที่เลือก
+          }
+        });
+      }
+    });
+  });
+</script>
+
+<%- include("_footer"); -%>

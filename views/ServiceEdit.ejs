@@ -1,0 +1,25 @@
+<%- include("_header1"); -%>
+<br>
+<br>
+<body>
+    <h1 align="center">Edit</h1>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-md-12 d-flex justify-content-center">   
+            <form method="post" action='/Service/edit/<%= data.ServiceID %>' class="w-50">
+                <div class="form-group">
+                    <label for="PortNumber">PortNumber:</label>
+                    <input type="text" class="form-control" id="PortNumber" name="PortNumber" value="<%= data.PortNumber %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="ServiceName">ServiceName:</label>
+                    <input type="text" class="form-control" id="ServiceName" name="ServiceName" value="<%= data.ServiceName %>" required>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-info">บันทึก</button>
+                <a href="/Service/list" class="btn btn-danger">ย้อนกลับ</a>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include("_footer"); -%>

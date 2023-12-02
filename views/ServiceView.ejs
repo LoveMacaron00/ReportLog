@@ -1,0 +1,117 @@
+<%- include("_header1"); -%>
+<br>
+<br>
+<br>
+<style>
+    .form-control {
+    width: 15%; /* หรือ width: 50vw; */
+}
+</style>
+<h3 align="center"> Service </h3>
+<div class="container">
+    <div class="row mt-5">  
+        <div class="col-md-9">
+            <div>
+                <a href="/Service/new" class="btn btn-primary">Add</a>
+                <br>
+                <br>
+        <!-- เพิ่ม input field สำหรับการค้นหา -->
+<div class="form-group">
+    <label for="searchInput">ค้นหา:</label>
+    <input type="text" class="form-control" id="searchInput" placeholder="กรอกคำค้นหา">
+</div>
+                <br>
+            </div>
+        </div>
+        <div class="col-md-15">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>PortNumber</th>
+                        <th>ServiceName</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody class="table-body">
+                    <% if (data) { %>
+                        <% for (var i = 0; i < data.length; i++) { %>
+                            <tr>
+                                <td><%= data[i].ServiceID %></td>
+                                <td><%= data[i].PortNumber %></td>
+                                <td><%= data[i].ServiceName %></td>
+                                <td>
+                                    <a href="/Service/edit/<%= data[i].ServiceID %>" class="btn btn-info" style="width: 80px;">Edit</a>
+                                </td>
+                                <td>
+                                    <a href="/Service/delete/<%= data[i].ServiceID %>" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        <% } %>
+                    <% } %> 
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <% if (currentPage > 1) { %>
+                    <a href="/Service/list?page=<%= currentPage - 1 %>" class="btn btn-primary">Previous</a>
+                <% } %>
+
+                <% for (var i = 1; i <= totalPages; i++) { %>
+                    <a href="/Service/list?page=<%= i %>" class="btn btn-primary"><%= i %></a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                    <a href="/Service/list?page=<%= currentPage + 1 %>" class="btn btn-primary">Next</a>
+                <% } %>
+            </div> 
+            <br>
+
+            <a href="/Log/list" class="btn btn-primary">Return</a>
+        </div>
+    </div>
+</div>
+
+<!-- รวม jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<!-- ServiceView.ejs -->
+<script>
+$('#searchInput').on('keypress', function (e) {
+    if (e.which === 13) {
+        performSearch();
+    }
+});
+
+$('#searchInput').on('blur', function () {
+    performSearch();
+});
+
+function performSearch() {
+    var searchTerm = $('#searchInput').val();
+
+    console.log('คำค้นหาที่จะส่งไปที่เซิร์ฟเวอร์:', searchTerm);
+
+    $.ajax({
+        type: 'GET',
+        url: '/Service/search',
+        data: { searchTerm: searchTerm },
+        success: function (data) {
+
+            console.log('การตอบสนองจากเซิร์ฟเวอร์:', data);
+
+            $('.table-body').html(data.html);
+        },
+        error: function (err) {
+            console.error('Error:', err);
+        }
+    });
+}
+</script>
+
+
+
+
+<%- include("_footer"); -%>
